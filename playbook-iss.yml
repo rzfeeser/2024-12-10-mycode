@@ -1,0 +1,20 @@
+---
+- name: Query an Open API    # this is just metadata, but we should always have a name in the "play" section
+  hosts: localhost           # required for all plays- defines what platforms will be targeted by our playbook
+  connection: local          # running local.py (connection plugin -- default is ssh.py)
+
+  # define variable section
+  vars:
+      majortom: 'http://api.open-notify.org/astros.json'
+
+  # the state to set, what we want to do
+  tasks:
+  - name: Send an HTTP GET to API
+    ansible.builtin.uri:          # python3 uri.py  --method=GET --url='http://api.open-notify.org/astros.json'
+      method: GET
+      url: "{{ majortom }}"
+    register: data
+
+  - name: Use debug to show what is inside of our variable
+    ansible.builtin.debug:   # this is a python script, debug.py
+      msg: "{{ data }}"
